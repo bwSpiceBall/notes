@@ -37,7 +37,7 @@ passport.use(
 // Define the serializeUser and deserializeUser functions
 passport.serializeUser(function(user, done) {
   console.log('Serializing user', user);
-  done(null, user.id);
+  done(null, user);
 });
 
 

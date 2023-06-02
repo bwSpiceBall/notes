@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 });
 
 // Use Passport.js to authenticate the user
-router.post('/login', passport.authenticate('local', { successRedirect: '/notes', failureRedirect: '/', failureFlash: true, }), (req, res, next) => { next()});
+router.post('/login', passport.authenticate('local', { successRedirect: '/notes', failureRedirect: '/login', failureFlash: true, }), (req, res, next) => { next()});
 
 router.post('/logout', (req, res) => {
     req.logout();

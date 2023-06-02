@@ -2,7 +2,7 @@
   "name": "my-project",
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"cd server && yarn dev --inspect\" \"cd client && yarn dev\""
+    "dev": "concurrently \"cd server && yarn dev \" \"cd client && yarn dev\""
   },
   "dependencies": {
     "concurrently": "^6.3.0",

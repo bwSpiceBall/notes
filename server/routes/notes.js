@@ -4,9 +4,8 @@ const pool = require('../sqlConnection');
 
 
 function isAuthenticated(req, res, next) {
-
-    console.log('req.user', req);
-    if (req.user && req.user.isAuthenticated) {
+        console.log('req.session.passport', req.session.passport);
+    if (req.session.passport.user) {
         return next();
     } else {
         return res.sendStatus(401);
@@ -14,12 +13,12 @@ function isAuthenticated(req, res, next) {
 }
 
 
-router.get('/', async (req, res) => {
+router.get('/', isAuthenticated, async (req, res) => {
 
-    // console.log('isAuthenticated', isAuthenticated());
+    const userId = req.session.passport.user.id;
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM notes');
+        const result = await client.query(`SELECT * FROM notes WHERE user_id = ${userId}`);
         const notes = result.rows;
         client.release();
         res.json(notes);
@@ -31,8 +30,8 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-    const { user_id, note_text, title } = req.body;
-
+    const { note_text, title } = req.body;
+    const user_id = req.session.passport.user.id;
     if (!title.trim() || !note_text.trim()) {
         return res.status(400).json({ message: 'Title and Text cannot be empty' });
     }
